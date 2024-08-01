@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Order {
-    private RawOrder rawOrder;
-    private Courier courier;
+public class Courier {
+    long id;
+    long delayTimeInMillis;
 }
