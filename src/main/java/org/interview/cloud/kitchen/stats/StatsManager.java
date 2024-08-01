@@ -31,5 +31,7 @@ public class StatsManager {
     public void printReport() {
         log.info("orderCount = {}, orderWaitTimeInMillis = {}, courierCount = {}, courierWaitTimeInMillis = {}",
                 orderCount.get(), orderWaitTimeInMillis.get(), courierCount.get(), courierWaitTimeInMillis.get());
+        log.info("Average order waitTime in Millis = {}", orderWaitTimeInMillis.get() / orderCount.get());
+        log.info("Average courier waitTime in Millis = {}", courierWaitTimeInMillis.get() / courierCount.get());
     }
 }

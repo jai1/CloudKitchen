@@ -50,19 +50,20 @@ public class OrderSimulator implements Simulator {
     }
 
     public synchronized void shutdown() {
-        if (shutdown) {
-            return;
-        }
-        shutdown = true;
         scheduledExecutorService.shutdown();
-        orderManager.shutDown();
+        try {
+            scheduledExecutorService.awaitTermination(appProperties.getShutDownWaitTimeInSeconds(), TimeUnit.SECONDS);
+            orderManager.shutDown();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void simulateOrder(List<RawOrder> rawOrders) {
         for (int i = 0; i<appProperties.getOrdersPerSecond(); i++) {
             int index = currentIndex.getAndIncrement();
             if (index >= rawOrders.size()) {
-                shutdown();
+                break;
             }
             orderManager.startPrepping(rawOrders.get(i));
             if (index == rawOrders.size() - 1) {

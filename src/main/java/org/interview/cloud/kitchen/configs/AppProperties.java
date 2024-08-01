@@ -4,12 +4,14 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import jdk.jfr.Name;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class AppProperties {
     @Inject
     @Named("threadCount")
@@ -31,19 +33,23 @@ public class AppProperties {
     @Named("ordersPerSecond")
     private int ordersPerSecond;
 
-//    @Inject
-//    @Name("courierThreadCount")
-//    private int courierThreadCount = 4;
+    @Inject
+    @Named("courierThreadCount")
+    private int courierThreadCount;
 
-//    @Inject
-//    @Name("kitchenThreadCount")
-//    private int kitchenThreadCount = 4;
-//
-//    @Inject
-//    @Named("minCourierWaitTimeInMillis")
-//    private long minCourierWaitTimeInMillis = 3000;
-//
-//    @Inject
-//    @Named("maxCourierWaitTimeInMillis")
-//    private long maxCourierWaitTimeInMillis = 15000;
+    @Inject
+    @Named("kitchenThreadCount")
+    private int kitchenThreadCount;
+
+    @Inject
+    @Named("minCourierWaitTimeInMillis")
+    private long minCourierWaitTimeInMillis;
+
+    @Inject
+    @Named("maxCourierWaitTimeInMillis")
+    private long maxCourierWaitTimeInMillis;
+
+    @Inject
+    @Named("shutDownWaitTimeInSeconds")
+    private long shutDownWaitTimeInSeconds;
 }

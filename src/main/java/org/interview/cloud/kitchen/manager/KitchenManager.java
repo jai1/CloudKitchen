@@ -24,14 +24,15 @@ public class KitchenManager {
     public KitchenManager(AppProperties appProperties, Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
         this.appProperties = appProperties;
-        this.scheduledExecutorService = Executors.newScheduledThreadPool(4);
+        this.scheduledExecutorService = Executors.newScheduledThreadPool(appProperties.getKitchenThreadCount());
     }
 
     public void prepare(Order order) {
         this.scheduledExecutorService.schedule(() -> dispatcher.orderPrepared(order), order.getRawOrder().getPrepTime(), TimeUnit.SECONDS);
     }
 
-    public void shutdown() {
+    public void shutdown() throws InterruptedException {
         this.scheduledExecutorService.shutdown();
+        this.scheduledExecutorService.awaitTermination(appProperties.getShutDownWaitTimeInSeconds(), TimeUnit.SECONDS);
     }
 }

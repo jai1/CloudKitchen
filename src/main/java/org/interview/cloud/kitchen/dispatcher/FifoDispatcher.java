@@ -30,7 +30,7 @@ public class FifoDispatcher implements Dispatcher {
     ConcurrentLinkedQueue<Entry<Courier>> waitingCouriers = new ConcurrentLinkedQueue<>();
 
     ConcurrentLinkedQueue<Entry<RawOrder>> readyOrders = new ConcurrentLinkedQueue<>();
-    public void courierArrived(Order order) {
+    public synchronized void courierArrived(Order order) {
         log.debug("Courier Arrived {}", order);
         Entry<RawOrder> rawOrder = readyOrders.poll();
         if (rawOrder != null) {
@@ -41,7 +41,7 @@ public class FifoDispatcher implements Dispatcher {
         }
     }
 
-    public void orderPrepared(Order order) {
+    public synchronized void orderPrepared(Order order) {
         log.debug("Order Ready {}", order);
         Entry<Courier> courier = waitingCouriers.poll();
         if (courier != null) {

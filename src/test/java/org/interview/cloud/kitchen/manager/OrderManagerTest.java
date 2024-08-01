@@ -32,12 +32,12 @@ class OrderManagerTest {
     @Test
     public void testStartPrepping_CreatesOrderAndCallsMethods() {
         // Mock courierManager behavior
-        Mockito.when(courierManagerMock.createCourier(rawOrder)).thenReturn(expectedCourier);
+        Mockito.when(courierManagerMock.createCourier()).thenReturn(expectedCourier);
 
         orderManager.startPrepping(rawOrder);
 
         // Verify method calls on mocks
-        Mockito.verify(courierManagerMock, Mockito.times(1)).createCourier(rawOrder);
+        Mockito.verify(courierManagerMock, Mockito.times(1)).createCourier();
         Mockito.verify(kitchenManagerMock, Mockito.times(1)).prepare(Mockito.any(Order.class));
         Mockito.verify(courierManagerMock, Mockito.times(1)).dispatch(Mockito.any(Order.class));
     }
@@ -45,7 +45,7 @@ class OrderManagerTest {
     @Test
     public void testStartPrepping_CreatesOrderWithExpectedCourier() {
         // Mock courierManager behavior
-        Mockito.when(courierManagerMock.createCourier(rawOrder)).thenReturn(expectedCourier);
+        Mockito.when(courierManagerMock.createCourier()).thenReturn(expectedCourier);
 
         orderManager.startPrepping(rawOrder);
 
@@ -53,7 +53,7 @@ class OrderManagerTest {
     }
 
     @Test
-    public void testShutDown_CallsStatsAndManagerMethods() {
+    public void testShutDown_CallsStatsAndManagerMethods() throws InterruptedException {
         orderManager.shutDown();
 
         // Verify method calls on mocks

@@ -24,15 +24,15 @@ public class OrderManager {
 
     public void startPrepping(RawOrder rawOrder) {
         log.debug("Received {}", rawOrder);
-        Courier courier = courierManager.createCourier(rawOrder);
+        Courier courier = courierManager.createCourier();
         Order order = new Order(rawOrder, courier);
         kitchenManager.prepare(order);
         courierManager.dispatch(order);
     }
 
-    public void shutDown() {
-        statsManager.printReport();
+    public void shutDown() throws InterruptedException {
         kitchenManager.shutdown();
         courierManager.shutdown();
+        statsManager.printReport();
     }
 }

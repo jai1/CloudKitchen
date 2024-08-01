@@ -27,5 +27,6 @@ public class AppPropertiesModule extends AbstractModule {
         }
 
         Names.bindProperties(binder(), properties);
+        install(new DispatcherModule(properties));
     }
 }

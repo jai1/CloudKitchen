@@ -27,12 +27,11 @@ public class CourierManager {
 
     private final Random rand;
 
-
     @Inject
     public CourierManager(AppProperties appProperties, Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
         this.appProperties = appProperties;
-        this.scheduledExecutorService = Executors.newScheduledThreadPool(4);
+        this.scheduledExecutorService = Executors.newScheduledThreadPool(appProperties.getCourierThreadCount());
         this.idGenerator = new AtomicLong();
         this.rand = new Random();
     }
@@ -40,11 +39,12 @@ public class CourierManager {
         this.scheduledExecutorService.schedule(() -> dispatcher.courierArrived(order), order.getCourier().getDelayTimeInMillis(), TimeUnit.MILLISECONDS);
     }
 
-    public Courier createCourier(RawOrder rawOrder) {
-        return new Courier(idGenerator.getAndIncrement(), rand.nextLong(3000, 15000 + 1));
+    public Courier createCourier() {
+        return new Courier(idGenerator.getAndIncrement(), rand.nextLong(appProperties.getMinCourierWaitTimeInMillis(), appProperties.getMaxCourierWaitTimeInMillis() + 1));
     }
 
-    public void shutdown() {
+    public void shutdown() throws InterruptedException {
         this.scheduledExecutorService.shutdown();
+        this.scheduledExecutorService.awaitTermination(appProperties.getShutDownWaitTimeInSeconds(), TimeUnit.SECONDS);
     }
 }

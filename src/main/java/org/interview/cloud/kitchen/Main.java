@@ -16,8 +16,7 @@ public class Main {
         log.info("Staring Main !!!");
         Injector injector = Guice.createInjector(new AppPropertiesModule(),
                 new JsonModule(),
-                new SimulatorModule(),
-                new DispatcherModule());
+                new SimulatorModule());
         Service service = injector.getInstance(Service.class);
         service.run();
     }
